@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop 7: Using AJAX and Parsing XML</title>
+    <link rel="stylesheet" href="css/style.css"> <!-- Linking the CSS file -->
+</head>
+<body>
+    <h1>Workshop 7: Using AJAX and Parsing XML</h1>
+    <hr />
+    
+    <!-- Exercise 1: Parsing XML data -->
+    <h2>Exercise 1: Parsing XML data</h2>
+    <input type="button" id="Fetch" value="Fetch Quotes" onclick="parseData()">
+    <div id="quoteOutput"></div> <!-- Where parsed quotes will be displayed -->
+    
+    <hr />
+    
+    <!-- Exercise 2: AJAX call to an XML file -->
+    <h2>Exercise 2: AJAX call to an XML file</h2>
+    <input type="button" id="Fetch2" value="Load Famous Quotes" onclick="loadXMLFile()">
+    <div id="quotes"></div> <!-- Raw XML will be injected here -->
+    
+    <hr />
+    
+    <!-- Exercise 3: Parsing the XML -->
+    <h2>Exercise 3: Parsing the XML</h2>
+    <input type="button" id="Fetch3" value="Parse Famous Quotes" onclick="loadAndParseXML()">
+    <div id="tabledata">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Quote</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody id="quotesTableBody"></tbody> <!-- Parsed quotes will go here -->
+        </table>
+    </div>
+    
+    <hr />
+    
+    <!-- Exercise 4: AJAX call to a live newsfeed -->
+    <h2>Exercise 4: AJAX call to a live newsfeed</h2>
+    <input type="button" id="Fetch4a" value="Load Iltalehti Newsfeed" onclick="loadAndParseNews('http://www.iltalehti.fi/rss/uutiset.xml')">
+    <div id="newsfeed"></div> <!-- News items will be displayed here -->
+    
+    <script src="js/script.js"></script> <!-- Linking the JavaScript file -->
+</body>
+</html>
