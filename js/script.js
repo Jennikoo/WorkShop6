@@ -1,19 +1,26 @@
-// Exercise 1: Function to parse XML data embedded in HTML
+
+// Function to parse the embedded XML data
 function parseData() {
-    // Get all quotes and authors from the embedded XML
-    let quotes = document.getElementsByTagName("quotes");
-    let output = '';
-    
-    // Loop through each quote and append to output
-    for (let i = 0; i < quotes.length; i++) {
-        let quoteText = quotes[i].getElementsByTagName("quote")[0].textContent; // Fetch quote text
-        let authorText = quotes[i].getElementsByTagName("author")[0].textContent; // Fetch author text
-        output += `<p>${quoteText} - <strong>${authorText}</strong></p>`; // Format output
+    // Get all 'quotes' elements from the document
+    var quotes = document.getElementsByTagName("quotes");
+
+    // Prepare a variable to store the output
+    var output = '';
+
+    // Loop through each 'quotes' element and get the quote and author
+    for (var i = 0; i < quotes.length; i++) {
+        var quoteText = quotes[i].getElementsByTagName("quote")[0].textContent; // Get the quote
+        var authorText = quotes[i].getElementsByTagName("author")[0].textContent; // Get the author
+
+        // Append the quote and author to the output
+        output += '<p><strong>Quote:</strong> ' + quoteText + '<br>';
+        output += '<strong>Author:</strong> ' + authorText + '</p>';
     }
-    
-    // Inject the output into the designated div
-    document.getElementById("quoteOutput").innerHTML = output; // Display parsed quotes
+
+    // Inject the output into the 'quotes' div
+    document.getElementById("quotes").innerHTML = output; // Display parsed quotes
 }
+
 
 // Exercise 2: Load XML file via AJAX
 function loadXMLFile() {
@@ -29,59 +36,93 @@ function loadXMLFile() {
     }
 }
 
-// Exercise 3: Parse the XML and display in a table
-function loadAndParseXML() {
-    var xmlhttp = new XMLHttpRequest(); // Create AJAX object
-    xmlhttp.open("GET", "http://iceberg-cycle.codio.io/5: Asynchronous JavaScript (AJAX)/famous-quotes.xml", true); // Specify the data URL
-    xmlhttp.send(); // Send request
+// Exercise 3: Parse the XML and display in a table// Tehtävä 3
+
+function loadXMLFile() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", "https://cors-anywhere.herokuapp.com/http://quotes.rest/qod.xml", true);
+    xmlhttp.send();
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            let xmldoc = xmlhttp.responseXML; // Get XML document
-            let quotes = xmldoc.getElementsByTagName("quotes"); // Get all quotes
-            let tableBody = document.getElementById("quotesTableBody"); // Table body to inject rows
+            document.getElementById("quotes").innerHTML = xmlhttp.responseText;
+        } else if (xmlhttp.readyState == 4) {
+            console.error('Virhe: ' + xmlhttp.status);
+        }
+    }
+} 
+function loadAndParseXML() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", "https://cors-anywhere.herokuapp.com/http://quotes.rest/qod.xml", true);
+    xmlhttp.send();
 
-            // Clear any existing rows
-            tableBody.innerHTML = '';
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            // Puretaan XML-datan sisältö
+            const xmlDoc = xmlhttp.responseXML;
+            const quotes = xmlDoc.getElementsByTagName("quote");
+            const authors = xmlDoc.getElementsByTagName("author");
 
-            // Loop through each quote to populate the table
+            // Tyhjennetään taulukon sisältö ennen uuden datan lisäämistä
+            const tableBody = document.querySelector("#tabledata tbody");
+            tableBody.innerHTML = "<tr><td><strong>Quote</strong></td><td><strong>Author</strong></td></tr>";
+
+            // Lisätään jokainen lainaus ja sen kirjoittaja taulukkoon
             for (let i = 0; i < quotes.length; i++) {
-                let quoteText = quotes[i].getElementsByTagName("quote")[0].textContent; // Fetch quote text
-                let authorText = quotes[i].getElementsByTagName("author")[0].textContent; // Fetch author text
-                
-                // Create a new row and append to the table
-                let newRow = `<tr>
-                                <td>${quoteText}</td>
-                                <td>${authorText}</td>
-                              </tr>`;
-                tableBody.innerHTML += newRow; // Add new row to table body
+                const newRow = document.createElement("tr");
+                const quoteCell = document.createElement("td");
+                const authorCell = document.createElement("td");
+
+                quoteCell.textContent = quotes[i].textContent; // Lainaus
+                authorCell.textContent = authors[i].textContent; // Kirjoittaja
+
+                newRow.appendChild(quoteCell);
+                newRow.appendChild(authorCell);
+                tableBody.appendChild(newRow);
             }
+        } else if (xmlhttp.readyState == 4) {
+            console.error('Virhe: ' + xmlhttp.status);
         }
     }
 }
-
-// Exercise 4: Load and parse news feed
+            // 4
 function loadAndParseNews(url) {
-    var xmlhttp = new XMLHttpRequest(); // Create AJAX object
-    xmlhttp.open("GET", url, true); // Specify the news feed URL
-    xmlhttp.send(); // Send request
+    var xmlhttp = new XMLHttpRequest();
+    // Jos käytämme CORS-proxyä
+    if (url.includes("iltalehti")) {
+        url = "https://cors-anywhere.herokuapp.com/" + url; // Lisää CORS-proxy Iltalehti-URL:iin
+    }
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            let xmldoc = xmlhttp.responseXML; // Get XML document
-            let items = xmldoc.getElementsByTagName("item"); // Get all news items
-            let newsOutput = '<ul>'; // Prepare output
+            // Puretaan XML-datan sisältö
+            const xmlDoc = xmlhttp.responseXML;
+            const items = xmlDoc.getElementsByTagName("item"); // Haetaan kaikki uutisotsikot
 
-            // Loop through each news item
+            // Tyhjennetään uutislista ennen uuden datan lisäämistä
+            const newsList = document.getElementById("newsList");
+            newsList.innerHTML = "";
+
+            // Lisätään jokainen uutisotsikko listaan
             for (let i = 0; i < items.length; i++) {
-                let title = items[i].getElementsByTagName("title")[0].textContent; // Fetch title
-                let link = items[i].getElementsByTagName("link")[0].textContent; // Fetch link
+                const newItem = document.createElement("li");
+                const title = items[i].getElementsByTagName("title")[0].textContent; // Otsikko
+                const link = items[i].getElementsByTagName("link")[0].textContent; // Linkki uutiseen
 
-                // Create a list item with a link to the news article
-                newsOutput += `<li><a href="${link}" target="_blank">${title}</a></li>`;
+                // Luodaan hyperlinkki uutisotsikosta
+                const linkElement = document.createElement("a");
+                linkElement.href = link;
+                linkElement.textContent = title;
+                linkElement.target = "_blank"; // Avaa linkin uuteen välilehteen
+
+                newItem.appendChild(linkElement);
+                newsList.appendChild(newItem);
             }
-            newsOutput += '</ul>'; // Close list
-            document.getElementById("newsfeed").innerHTML = newsOutput; // Display news items
+        } else if (xmlhttp.readyState == 4) {
+            console.error('Virhe: ' + xmlhttp.status); // Tulostetaan virhe konsoliin
         }
     }
 }

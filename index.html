@@ -10,11 +10,24 @@
     <h1>Workshop 7: Using AJAX and Parsing XML</h1>
     <hr />
     
-    <!-- Exercise 1: Parsing XML data -->
     <h2>Exercise 1: Parsing XML data</h2>
-    <input type="button" id="Fetch" value="Fetch Quotes" onclick="parseData()">
-    <div id="quoteOutput"></div> <!-- Where parsed quotes will be displayed -->
-    
+    <p>This page has XML data embedded into it. See page source, line 78. The browser cannot display it properly, but it's there. Below you can also see the structure data.</p>
+    <p>Write a function called parseData(), which will output the quote and author tags from XML when button is clicked.</p>
+
+    <input type="button" name="Fetch" id="Fetch" value="Button" onclick="parseData()">
+    <div id="quotes"></div>
+
+    <!-- XML data embedded in the HTML -->
+    <quotes>
+        <quote>I'm not concerned about all hell breaking loose, but that a PART of hell will break loose... it'll be much harder to detect.</quote>
+        <length>124</length>
+        <author>George Carlin</author>
+    </quotes>
+    <quotes>
+        <quote>The biggest problem with every art is by the use of appearance to create a loftier reality.</quote>
+        <author>Johann Wolfgang von Goethe</author>
+    </quotes>
+    <hr/>
     <hr />
     
     <!-- Exercise 2: AJAX call to an XML file -->
@@ -43,8 +56,18 @@
     
     <!-- Exercise 4: AJAX call to a live newsfeed -->
     <h2>Exercise 4: AJAX call to a live newsfeed</h2>
-    <input type="button" id="Fetch4a" value="Load Iltalehti Newsfeed" onclick="loadAndParseNews('http://www.iltalehti.fi/rss/uutiset.xml')">
-    <div id="newsfeed"></div> <!-- News items will be displayed here -->
+    <p>Next try fetching data from a web service. Use either Yahoo news feed 
+        <a href="https://meijastiina.github.io/news_rss_topstories.xml" target="_blank">here</a> 
+        or a Finnish one 
+        <a href="http://www.iltalehti.fi/rss/uutiset.xml" target="_blank">here</a>.
+    </p>
+    
+    <input type="button" name="Fetch3" id="Fetch3b" value="Load YAHOO newsfeed" onclick="loadAndParseNews('https://meijastiina.github.io/news_rss_topstories.xml')">
+    <input type="button" name="Fetch3" id="Fetch3c" value="Load Iltalehti Newsfeed" onclick="loadAndParseNews('https://www.iltalehti.fi/rss/uutiset.xml')">
+    
+    <div id="newsfeed">
+        <ul id="newsList"></ul> <!-- Lista uutisotsikoille -->
+    </div>
     
     <script src="js/script.js"></script> <!-- Linking the JavaScript file -->
 </body>
